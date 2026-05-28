@@ -1,18 +1,27 @@
-# ViciDial Integration Guide
+# Experimental ViciDial Integration Notes
 
-Complete guide for integrating Asterisk AI Voice Agent with ViciDial for inbound and outbound AI-powered calling.
+Community-tested notes for exploring Asterisk AI Voice Agent with ViciDial in non-production environments.
+
+> **Status: Experimental / Community-Tested**
+>
+> This guide reflects a limited setup tested with community users who requested a ViciDial path. It has not been reviewed or endorsed by ViciDial maintainers and should not be treated as production-ready ViciDial integration guidance.
+>
+> A ViciDial maintainer has raised concerns that direct AAVA/ARI origination through ViciDial dialplan contexts may bypass ViciDial's normal call-control, reporting, hangup processing, and compliance safeguards.
+>
+> For production ViciDial environments, the safer intended direction is for ViciDial to own call origination/routing and hand connected calls to AAVA through ViciDial Remote Agents, with follow-up transfer/control handled through ViciDial's Agent API such as `ra_call_control`.
 
 ## 1. Overview
 
-ViciDial is a popular open-source contact center suite built on Asterisk. AAVA integrates with ViciDial using the **Asterisk REST Interface (ARI)**, the same mechanism used for FreePBX — but ViciDial has different dialplan conventions, channel technologies, and routing patterns that require specific configuration.
+ViciDial is a popular open-source contact center suite built on Asterisk. These notes describe an experimental AAVA path that uses the **Asterisk REST Interface (ARI)**, the same mechanism used for FreePBX, against a ViciDial-style Asterisk environment. ViciDial has its own dialplan conventions, channel technologies, routing patterns, reporting, and call-state lifecycle, so validate carefully before using any part of this outside a lab.
 
-This guide covers:
+These notes cover:
 
 - Inbound call routing (DID → AI agent)
-- Outbound campaign dialing (AAVA scheduler → ViciDial carrier trunks)
+- Experimental outbound campaign dialing (AAVA scheduler → ViciDial carrier trunks)
 - Environment variable configuration
 - Dialplan contexts required in `extensions.conf`
 - Troubleshooting common issues
+- Future production direction using ViciDial Remote Agents
 
 ### Key Differences: ViciDial vs FreePBX
 
@@ -22,7 +31,7 @@ This guide covers:
 | Dial prefix | None (trunk selected by route) | Carrier prefix (e.g. `911`, `913`) |
 | Channel technology | PJSIP (`pjsip` module) | SIP (`chan_sip`) |
 | Extension routing vars | `AMPUSER`, `FROMEXTEN` | Not used |
-| Call origination | ARI only | AMI (ViciDial native) + ARI (AAVA) |
+| Call origination | ARI only | AMI (ViciDial native); ARI/AAVA path below is experimental |
 | Trunk configuration | FreePBX GUI → Trunks | `/etc/asterisk/sip.conf` peers |
 
 ## 2. Prerequisites
@@ -93,7 +102,7 @@ You should see `chan_sip.so` loaded. If you also see `res_pjsip.so`, both are av
 
 ## 3. Dialplan Configuration
 
-Add these two contexts to your `/etc/asterisk/extensions.conf`. They handle inbound AI agent calls and outbound campaign AMD (Answering Machine Detection) handoff.
+For lab testing, add these two contexts to your `/etc/asterisk/extensions.conf`. They handle inbound AI agent calls and an experimental outbound campaign AMD (Answering Machine Detection) handoff.
 
 ### 3.1 Inbound Context: `[from-ai-agent]`
 
@@ -115,7 +124,7 @@ exten => s,1,NoOp(AI Agent Call)
 
 ### 3.2 Outbound AMD Context: `[aava-outbound-amd]`
 
-This context is the handoff point after an outbound call is answered. AAVA originates the call, the dialplan processes AMD, then hands the call to the Stasis application.
+This context is the experimental handoff point after an outbound call is answered. AAVA originates the call, the dialplan processes AMD, then hands the call to the Stasis application.
 
 #### Option A: Direct Connect (No AMD)
 
@@ -133,7 +142,7 @@ exten => s,1,NoOp(AAVA Outbound Direct Connect)
 
 #### Option B: Full AMD with Voicemail Drop and Consent Gate
 
-Production-grade setup with answering machine detection, voicemail drop, and optional DTMF consent gate:
+More complete test setup with answering machine detection, voicemail drop, and optional DTMF consent gate:
 
 ```ini
 [aava-outbound-amd]
@@ -180,7 +189,7 @@ asterisk -rx "dialplan reload"
 
 ## 4. Environment Variable Configuration
 
-Add these to your `.env` file in the AAVA project root. These tell the `ai_engine` how to originate outbound calls through ViciDial's Asterisk dialplan.
+For lab testing, add these to your `.env` file in the AAVA project root. These tell the `ai_engine` how to originate outbound calls through ViciDial's Asterisk dialplan.
 
 ### 4.1 ARI Connection (same as FreePBX)
 
@@ -190,10 +199,10 @@ ASTERISK_ARI_PASSWORD=your_secure_password_here
 ASTERISK_ARI_PORT=8088
 ```
 
-### 4.2 ViciDial-Specific Outbound Settings
+### 4.2 Experimental ViciDial Outbound Settings
 
 ```env
-# Tell AAVA this is a ViciDial system (skips FreePBX-specific AMPUSER/FROMEXTEN vars)
+# Experimental/community-tested only; skips FreePBX-specific AMPUSER/FROMEXTEN vars
 AAVA_OUTBOUND_PBX_TYPE=vicidial
 
 # ViciDial's outbound dial context (usually "default", which includes carrier routes)
@@ -240,18 +249,18 @@ Use the same prefix, or the one that routes through your preferred carrier.
 
 | Variable | Default | ViciDial Value | Description |
 | --- | --- | --- | --- |
-| `AAVA_OUTBOUND_PBX_TYPE` | `freepbx` | `vicidial` | Controls FreePBX-specific channel vars. Set to `vicidial` or `generic` for non-FreePBX systems. |
+| `AAVA_OUTBOUND_PBX_TYPE` | `freepbx` | `vicidial` | Controls FreePBX-specific channel vars. `vicidial` is experimental/community-tested; `generic` is available for non-FreePBX systems. |
 | `AAVA_OUTBOUND_DIAL_CONTEXT` | `from-internal` | `default` | Asterisk dialplan context for `Local/` channel origination. |
 | `AAVA_OUTBOUND_DIAL_PREFIX` | *(empty)* | e.g. `913` | Prefix prepended to phone number. Must match a carrier pattern in your dialplan. |
 | `AAVA_OUTBOUND_CHANNEL_TECH` | `auto` | `sip` | Channel technology for internal extension probing. `auto` tries PJSIP then SIP. `sip` for chan_sip only. `local_only` skips probing. |
 | `AAVA_OUTBOUND_EXTENSION_IDENTITY` | `6789` | e.g. `1000` | Extension identity for caller ID on outbound calls. |
 | `AAVA_OUTBOUND_AMD_CONTEXT` | `aava-outbound-amd` | `aava-outbound-amd` | Dialplan context for AMD hop (usually same for both). |
 
-These settings are also configurable via the **Admin UI** → **System** → **Environment Variables** → **Outbound Campaign** section.
+These settings are also configurable via the **Admin UI** → **System** → **Environment Variables** → **Outbound Campaign** section. The Admin UI labels this path as experimental.
 
 ## 5. How Outbound Dialing Works
 
-When AAVA's outbound scheduler fires a campaign call, the following happens:
+In the experimental ARI-originated path, when AAVA's outbound scheduler fires a campaign call, the following happens:
 
 ```text
 1. ai_engine reads campaign + lead from DB
@@ -269,6 +278,8 @@ When AAVA's outbound scheduler fires a campaign call, the following happens:
 6. AMD context hands channel to Stasis(asterisk-ai-voice-agent)
 7. ai_engine handles AI conversation (greeting, STT, LLM, TTS)
 ```
+
+> **Important:** This flow may bypass parts of ViciDial's normal call-control, reporting, hangup processing, and compliance handling. Treat it as a community-tested lab path, not a ViciDial-native production design.
 
 ### Call Flow Diagram
 
@@ -300,7 +311,7 @@ git pull origin main
 
 # Copy example env and configure
 cp .env.example .env
-# Edit .env with your ARI credentials and ViciDial-specific settings (see Section 4)
+# Edit .env with your ARI credentials and experimental ViciDial settings (see Section 4)
 ```
 
 ### 6.2 Add Dialplan Contexts
@@ -448,22 +459,33 @@ docker logs ai_engine 2>&1 | grep "AudioSocket"
 
 Ensure port 8090/TCP is accessible from Asterisk to the ai_engine container.
 
-## 9. Admin UI Configuration
+## 9. Recommended Future Direction
 
-The ViciDial-specific settings are available in the Admin UI under **System** → **Environment Variables** → **Outbound Campaign (Alpha)**:
+The intended production direction is a ViciDial-native Remote Agent design:
 
-- **PBX Type**: Select "ViciDial"
+1. ViciDial owns inbound/outbound call handling, campaign logic, routing, reporting, compliance behavior, and hangup processing.
+2. When a call is connected, ViciDial sends it to a Remote Agent extension.
+3. That extension invokes AAVA for the AI voice interaction.
+4. When the AI interaction is complete, AAVA uses ViciDial's Agent API, such as `ra_call_control`, to transfer the call to an Ingroup or external destination.
+
+This design should be reviewed with ViciDial maintainers or the official ViciDial forum before replacing these experimental notes.
+
+## 10. Admin UI Configuration
+
+The experimental ViciDial-specific settings are available in the Admin UI under **System** → **Environment Variables** → **Outbound Campaign (Alpha)**:
+
+- **PBX Type**: Select "ViciDial (experimental)"
 - **Dial Context**: Set to your ViciDial outbound context (usually `default`)
 - **Dial Prefix**: Set to your carrier prefix (e.g. `913`)
 - **Channel Tech**: Select "SIP only (chan_sip)" for ViciDial
 
 Changes made in the Admin UI are saved to the `.env` file and take effect after restarting the ai_engine container.
 
-## 10. Files Reference
+## 11. Files Reference
 
 | File | Purpose |
 | --- | --- |
-| `.env` | Environment variables including ViciDial-specific outbound settings |
+| `.env` | Environment variables including experimental ViciDial-specific outbound settings |
 | `.env.example` | Documented example with all available variables |
 | `src/engine.py` | Core engine — outbound origination logic, endpoint selection, channel vars |
 | `config/ai-agent.yaml` | AI context definitions, provider configuration, audio profiles |
@@ -473,7 +495,7 @@ Changes made in the Admin UI are saved to the `.env` file and take effect after 
 | `/etc/asterisk/http.conf` | Asterisk HTTP server (required for ARI) |
 | `/etc/asterisk/extensions-vicidial.conf` | ViciDial carrier route patterns (read-only reference) |
 
-## 11. Related Documentation
+## 12. Related Documentation
 
 - [INSTALLATION.md](INSTALLATION.md) — First-time installation
 - [Configuration-Reference.md](Configuration-Reference.md) — Full configuration reference

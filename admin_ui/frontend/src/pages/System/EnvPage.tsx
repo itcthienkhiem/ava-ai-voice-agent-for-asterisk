@@ -2106,22 +2106,22 @@ const EnvPage = () => {
                                     onChange={(e) => updateEnv('AAVA_OUTBOUND_PBX_TYPE', e.target.value)}
                                     options={[
                                         { value: 'freepbx', label: 'FreePBX' },
-                                        { value: 'vicidial', label: 'ViciDial' },
+                                        { value: 'vicidial', label: 'ViciDial (experimental)' },
                                         { value: 'generic', label: 'Generic Asterisk' },
                                     ]}
-                                    tooltip="Controls FreePBX-specific channel vars (AMPUSER/FROMEXTEN). ViciDial and generic skip them."
+                                    tooltip="Controls FreePBX-specific channel vars (AMPUSER/FROMEXTEN). ViciDial mode is experimental/community-tested and not production-reviewed by ViciDial maintainers."
                                 />
                                 <FormInput
                                     label="Dial Context"
                                     value={env['AAVA_OUTBOUND_DIAL_CONTEXT'] || 'from-internal'}
                                     onChange={(e) => updateEnv('AAVA_OUTBOUND_DIAL_CONTEXT', e.target.value)}
-                                    tooltip="Asterisk dialplan context for Local/ origination. FreePBX: from-internal, ViciDial: default."
+                                    tooltip="Asterisk dialplan context for Local/ origination. FreePBX: from-internal. Experimental ViciDial notes commonly use default."
                                 />
                                 <FormInput
                                     label="Dial Prefix"
                                     value={env['AAVA_OUTBOUND_DIAL_PREFIX'] || ''}
                                     onChange={(e) => updateEnv('AAVA_OUTBOUND_DIAL_PREFIX', e.target.value)}
-                                    tooltip="Prefix prepended to phone number for carrier routing. ViciDial example: 911."
+                                    tooltip="Prefix prepended to phone number for carrier routing. Experimental ViciDial notes use examples like 911."
                                 />
                                 <FormSelect
                                     label="Channel Tech"
@@ -2133,7 +2133,7 @@ const EnvPage = () => {
                                         { value: 'sip', label: 'SIP only (chan_sip)' },
                                         { value: 'local_only', label: 'Local only (no probing)' },
                                     ]}
-                                    tooltip="Channel technology for internal extension probing. ViciDial uses SIP (chan_sip)."
+                                    tooltip="Channel technology for internal extension probing. Experimental ViciDial notes typically use SIP (chan_sip)."
                                 />
                                 <FormInput
                                     label="Media Directory"

@@ -115,7 +115,7 @@ contexts:
 
       - AI receptionist with extension routing and ring group support
 
-      - Outbound campaigns and sales with ViciDial integration
+      - Outbound campaigns and sales with experimental ViciDial community-tested notes
 
       - Multilingual support for global businesses
 
@@ -128,7 +128,7 @@ contexts:
 
       - Live agent transfer with real-time extension status checks
 
-      - AI-native outbound campaign dialer with ViciDial and FreePBX support
+      - AI-native outbound campaign dialer with FreePBX support and experimental ViciDial community-tested notes
 
       - MCP tool server support for extensible AI capabilities
 
@@ -314,7 +314,7 @@ contexts:
 
       - AI receptionist with extension routing and ring group support
 
-      - Outbound campaigns and sales with ViciDial integration
+      - Outbound campaigns and sales with experimental ViciDial community-tested notes
 
       - Multilingual support for global businesses
 
@@ -327,7 +327,7 @@ contexts:
 
       - Live agent transfer with real-time extension status checks
 
-      - AI-native outbound campaign dialer with ViciDial and FreePBX support
+      - AI-native outbound campaign dialer with FreePBX support and experimental ViciDial community-tested notes
 
       - MCP tool server support for extensible AI capabilities
 
@@ -503,8 +503,10 @@ contexts:
       - Outbound campaign dialer (v1): single-node, scheduled campaigns, CSV lead import,
         voicemail detection + prerecorded voicemail drop, manual recycle for retries
 
-      - ViciDial integration: set AAVA_OUTBOUND_PBX_TYPE=vicidial to use ViciDial's dialer
-        with AAVA's AI voice handling. Configurable dial context, prefix, and channel tech.
+      - ViciDial notes: experimental/community-tested configuration exists for
+        AAVA_OUTBOUND_PBX_TYPE=vicidial. It is not production-reviewed by ViciDial
+        maintainers; production ViciDial deployments should prefer a ViciDial-native
+        Remote Agent design.
 
       - Also supports FreePBX and generic Asterisk setups via AAVA_OUTBOUND_PBX_TYPE
 
@@ -517,8 +519,9 @@ contexts:
 
       OBJECTIONS / COMPARISONS (be balanced):
 
-      - If they mention Vicidial: acknowledge it's powerful for predictive dialing; AAVA now
-        integrates with ViciDial directly so they can use both together
+      - If they mention Vicidial: acknowledge it's powerful for predictive dialing.
+        Explain that AAVA has experimental community-tested ViciDial notes, but
+        production use should be designed around ViciDial Remote Agents.
 
       - If they worry about trunks/callerid: explain it uses their existing outbound routes/trunks
 
@@ -597,7 +600,7 @@ contexts:
 
       - AI receptionist with extension routing and ring group support
 
-      - Outbound campaigns and sales with ViciDial integration
+      - Outbound campaigns and sales with experimental ViciDial community-tested notes
 
       - Multilingual support for global businesses
 
@@ -610,7 +613,7 @@ contexts:
 
       - Live agent transfer with real-time extension status checks
 
-      - AI-native outbound campaign dialer with ViciDial and FreePBX support
+      - AI-native outbound campaign dialer with FreePBX support and experimental ViciDial community-tested notes
 
       - MCP tool server support for extensible AI capabilities
 
@@ -842,7 +845,7 @@ contexts:
 
       - AI receptionist with extension routing and ring group support
 
-      - Outbound campaigns and sales with ViciDial integration
+      - Outbound campaigns and sales with experimental ViciDial community-tested notes
 
       - Multilingual support for global businesses
 
@@ -855,7 +858,7 @@ contexts:
 
       - Live agent transfer with real-time extension status checks
 
-      - AI-native outbound campaign dialer with ViciDial and FreePBX support
+      - AI-native outbound campaign dialer with FreePBX support and experimental ViciDial community-tested notes
 
       - MCP tool server support for extensible AI capabilities
 
@@ -1033,7 +1036,7 @@ contexts:
 
       - AI receptionist with extension routing and ring group support
 
-      - Outbound campaigns and sales with ViciDial integration
+      - Outbound campaigns and sales with experimental ViciDial community-tested notes
 
       - Multilingual support for global businesses
 
@@ -1046,7 +1049,7 @@ contexts:
 
       - Live agent transfer with real-time extension status checks
 
-      - AI-native outbound campaign dialer with ViciDial and FreePBX support
+      - AI-native outbound campaign dialer with FreePBX support and experimental ViciDial community-tested notes
 
       - MCP tool server support for extensible AI capabilities
 

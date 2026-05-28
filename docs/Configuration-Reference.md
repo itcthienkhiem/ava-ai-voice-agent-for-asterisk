@@ -147,9 +147,9 @@ Outbound calling is implemented as an **engine-driven scheduler + SQLite + ARI o
 |----------|---------|-------------|
 | `AAVA_OUTBOUND_EXTENSION_IDENTITY` | `6789` | Extension identity for FreePBX routing (sets `AMPUSER` + `CALLERID(num)` on originate) |
 | `AAVA_OUTBOUND_AMD_CONTEXT` | `aava-outbound-amd` | Dialplan context name used for AMD hop (`continueInDialplan`) |
-| `AAVA_OUTBOUND_PBX_TYPE` | `freepbx` | PBX-specific channel vars: `freepbx` \| `vicidial` \| `generic` |
+| `AAVA_OUTBOUND_PBX_TYPE` | `freepbx` | PBX-specific channel vars: `freepbx` \| `vicidial` experimental/community-tested \| `generic` |
 | `AAVA_OUTBOUND_DIAL_CONTEXT` | `from-internal` | Asterisk dialplan context for `Local/` channel origination |
-| `AAVA_OUTBOUND_DIAL_PREFIX` | (empty) | Dial prefix prepended to phone number for carrier selection (e.g. `911` for ViciDial) |
+| `AAVA_OUTBOUND_DIAL_PREFIX` | (empty) | Dial prefix prepended to phone number for carrier selection (e.g. `911` in the experimental ViciDial notes) |
 | `AAVA_OUTBOUND_CHANNEL_TECH` | `auto` | Channel tech for extension probing: `auto` \| `pjsip` \| `sip` \| `local_only` |
 | `AAVA_MEDIA_DIR` | `/mnt/asterisk_media/ai-generated` | Where the Admin UI uploads voicemail drop `.ulaw` files |
 

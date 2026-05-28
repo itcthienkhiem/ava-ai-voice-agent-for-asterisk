@@ -269,7 +269,7 @@ For older releases, expand **Previous Versions** below. Full release notes in [C
 
 #### v6.1.1 - Operator Config & Live Agent Transfer
 - Operator config overrides (`ai-agent.local.yaml`), live agent transfer tool
-- ViciDial compatibility, Asterisk config discovery in Admin UI
+- Experimental ViciDial community-tested configuration notes, Asterisk config discovery in Admin UI
 - OpenAI Realtime GA API, Email system overhaul, NAT/GPU support
 
 #### v5.3.1 - Phase Tools & Stability

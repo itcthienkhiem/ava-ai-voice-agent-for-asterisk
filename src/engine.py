@@ -284,7 +284,8 @@ class Engine:
         self._outbound_amd_context = str(os.getenv("AAVA_OUTBOUND_AMD_CONTEXT", "aava-outbound-amd")).strip() or "aava-outbound-amd"
         self._outbound_pjsip_endpoint_cache: Dict[str, Dict[str, Any]] = {}
         self._outbound_pjsip_endpoint_cache_ttl_seconds = float(os.getenv("AAVA_OUTBOUND_PJSIP_ENDPOINT_CACHE_TTL_SECONDS", "300") or "300")
-        # ViciDial / generic PBX compatibility (defaults preserve FreePBX behavior)
+        # Generic PBX routing plus experimental/community-tested ViciDial notes.
+        # Defaults preserve FreePBX behavior.
         self._outbound_dial_context = str(os.getenv("AAVA_OUTBOUND_DIAL_CONTEXT", "from-internal")).strip() or "from-internal"
         self._outbound_dial_prefix = str(os.getenv("AAVA_OUTBOUND_DIAL_PREFIX", "")).strip()
         self._outbound_channel_tech = str(os.getenv("AAVA_OUTBOUND_CHANNEL_TECH", "auto")).strip().lower() or "auto"
@@ -1394,7 +1395,7 @@ class Engine:
             logger.error("Outbound scheduler crashed", exc_info=True)
 
     async def _outbound_originate_attempt(self, campaign: Dict[str, Any], lead: Dict[str, Any], attempt_id: str) -> None:
-        """Originate a leased+marked lead via configurable Local/ routing (FreePBX, ViciDial, generic)."""
+        """Originate a leased+marked lead via configurable Local/ routing."""
         campaign_id = str(campaign.get("id") or "")
         lead_id = str(lead.get("id") or "")
         phone = str(lead.get("phone_number") or "").strip()
@@ -1567,9 +1568,10 @@ class Engine:
         """
         Choose best endpoint for outbound dialing.
 
-        Configurable via env vars for FreePBX, ViciDial, or generic Asterisk:
+        Configurable via env vars for FreePBX, generic Asterisk, or the experimental
+        ViciDial community-tested notes:
         - AAVA_OUTBOUND_DIAL_CONTEXT  (default: from-internal)
-        - AAVA_OUTBOUND_DIAL_PREFIX   (default: empty — ViciDial uses e.g. '911')
+        - AAVA_OUTBOUND_DIAL_PREFIX   (default: empty; ViciDial notes use e.g. '911')
         - AAVA_OUTBOUND_CHANNEL_TECH  (auto | pjsip | sip | local_only)
 
         When channel_tech is 'auto', probes PJSIP then SIP for internal extensions.
