@@ -55,7 +55,7 @@ const TerminalPage = () => {
                     ];
 
                 case 'version':
-                    return ['Asterisk AI Agent v1.0.0 (Admin UI)'];
+                    return ['AKIVA v1.0.0 (Admin UI)'];
 
                 case 'clear':
                     setHistory([]);

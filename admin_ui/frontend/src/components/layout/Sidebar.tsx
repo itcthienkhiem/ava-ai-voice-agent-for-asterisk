@@ -68,12 +68,12 @@ const Sidebar = () => {
                 <div className="flex items-center gap-3 font-bold text-xl tracking-tight">
                     <img
                         src="/mascot_transparent.png"
-                        alt="AVA Mascot"
+                        alt="AKIVA"
                         className="w-11 h-11 object-contain"
                     />
                     <div className="flex flex-col leading-none">
-                        <span>AVA</span>
-                        <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-1">AI Voice Agent for Asterisk</span>
+                        <span>AKIVA</span>
+                        <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-1">AI Voice Agent</span>
                     </div>
                 </div>
             </div>

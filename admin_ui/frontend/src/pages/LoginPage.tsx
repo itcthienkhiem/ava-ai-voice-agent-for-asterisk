@@ -35,13 +35,13 @@ const LoginPage: React.FC = () => {
                     <div className="flex items-center justify-center mb-4">
                         <img
                             src="/mascot_transparent.png"
-                            alt="AVA Mascot"
+                            alt="AKIVA"
                             className="w-24 h-auto relative z-10 -mr-6"
                         />
-                        <h2 className="text-3xl font-bold text-foreground relative z-0">Asterisk AI Voice Agent</h2>
+                        <h2 className="text-3xl font-bold text-foreground relative z-0">AKIVA</h2>
                     </div>
                     <p className="mt-2 text-sm text-muted-foreground">
-                        Sign in to manage your AI Voice Agent
+                        Sign in to manage your AKIVA
                     </p>
                 </div>
 
