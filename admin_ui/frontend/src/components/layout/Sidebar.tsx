@@ -18,8 +18,6 @@ import {
     Terminal,
     AlertTriangle,
     Code,
-    HelpCircle,
-    ExternalLink,
     HardDrive,
     ArrowUpCircle,
     Phone,
@@ -115,19 +113,6 @@ const Sidebar = () => {
 
                 <SidebarGroup title="Danger Zone">
                     <SidebarItem to="/yaml" icon={Code} label="Raw YAML" />
-                </SidebarGroup>
-
-                <SidebarGroup title="Support">
-                    <SidebarItem to="/help" icon={HelpCircle} label="Help" />
-                    <a
-                        href="/docs"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-                    >
-                        <ExternalLink className="w-4 h-4" />
-                        API Docs
-                    </a>
                 </SidebarGroup>
             </div>
 
