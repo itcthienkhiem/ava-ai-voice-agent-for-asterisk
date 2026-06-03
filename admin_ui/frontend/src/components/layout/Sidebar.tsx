@@ -65,7 +65,7 @@ const Sidebar = () => {
             <div className="p-6 border-b border-border/50">
                 <div className="flex items-center gap-3 font-bold text-xl tracking-tight">
                     <img
-                        src="/mascot_transparent.png"
+                        src="/logo.svg"
                         alt="AKIVA"
                         className="w-11 h-11 object-contain"
                     />

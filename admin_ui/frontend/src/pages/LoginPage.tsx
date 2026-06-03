@@ -34,11 +34,11 @@ const LoginPage: React.FC = () => {
                 <div className="text-center">
                     <div className="flex items-center justify-center mb-4">
                         <img
-                            src="/mascot_transparent.png"
+                            src="/logo.svg"
                             alt="AKIVA"
-                            className="w-24 h-auto relative z-10 -mr-6"
+                            className="w-16 h-16 object-contain mr-3"
                         />
-                        <h2 className="text-3xl font-bold text-foreground relative z-0">AKIVA</h2>
+                        <h2 className="text-3xl font-bold text-foreground">AKIVA</h2>
                     </div>
                     <p className="mt-2 text-sm text-muted-foreground">
                         Sign in to manage your AKIVA
